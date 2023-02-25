@@ -10,6 +10,7 @@ import Loading from '../screens/utils/Loading';
 export default () => {
 	const auth = useContext(AuthContext);
 	const user = auth.user;
+
 	return (
 		<NavigationContainer>
 			{user == null && <Loading />}

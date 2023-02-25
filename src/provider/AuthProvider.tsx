@@ -20,9 +20,6 @@ const AuthProvider = (props: Props) => {
 	useEffect(() => {
     const getAndSetSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-
-      // TODO: Check For error
-
       setSession(session);
       setUser(session ? true : false);
     }
@@ -35,7 +32,9 @@ const AuthProvider = (props: Props) => {
 			}
 		);
 
-    getAndSetSession()
+    if (!user) {
+      getAndSetSession()
+    }
 
 		return () => {
 			authListener!.subscription.unsubscribe();

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   ScrollView,
@@ -19,6 +19,7 @@ import {
   useTheme,
   themeColor,
 } from "react-native-rapi-ui";
+import { AuthContext } from "../../provider/AuthProvider";
 
 export default function ({
   navigation,
@@ -40,6 +41,7 @@ export default function ({
       setLoading(false);
       alert("Check your email for the login link!");
     }
+
     if (error) {
       setLoading(false);
       alert(error.message);
