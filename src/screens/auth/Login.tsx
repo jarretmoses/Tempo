@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
 import {
   ScrollView,
   TouchableOpacity,
@@ -19,7 +18,6 @@ import {
   useTheme,
   themeColor,
 } from "react-native-rapi-ui";
-import { AuthContext } from "../../provider/AuthProvider";
 
 export default function ({
   navigation,
