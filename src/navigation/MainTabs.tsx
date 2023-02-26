@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { themeColor, useTheme } from "react-native-rapi-ui";
@@ -8,9 +8,10 @@ import TabBarText from "../components/utils/TabBarText";
 import Home from "../screens/Home";
 import About from "../screens/About";
 import Profile from "../screens/Profile";
+import Feed from "../screens/Feed";
 
 const Tabs = createBottomTabNavigator();
-const MainTabs = () => {
+const MainTabs: FC = () => {
   const { isDarkmode } = useTheme();
   return (
     <Tabs.Navigator
@@ -25,7 +26,7 @@ const MainTabs = () => {
       {/* these icons using Ionicons */}
       <Tabs.Screen
         name="Home"
-        component={Home}
+        component={Feed}
         options={{
           tabBarLabel: ({ focused }) => (
             <TabBarText focused={focused} title="Home" />

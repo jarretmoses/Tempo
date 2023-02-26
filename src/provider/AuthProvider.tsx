@@ -20,6 +20,8 @@ const AuthProvider = (props: Props) => {
 	useEffect(() => {
     const getAndSetSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
+
+      console.log('session::::::', await supabase.auth.getUser())
       setSession(session);
       setUser(session ? true : false);
     }

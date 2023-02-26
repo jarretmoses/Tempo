@@ -1,5 +1,5 @@
 export type MainStackParamList = {
-	MainTabs: undefined;
+	MainTabs: any;
 	SecondScreen: undefined;
 };
 
