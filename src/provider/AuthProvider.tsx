@@ -21,7 +21,6 @@ const AuthProvider = (props: Props) => {
     const getAndSetSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
 
-      console.log('session::::::', await supabase.auth.getUser())
       setSession(session);
       setUser(session ? true : false);
     }
