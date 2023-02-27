@@ -69,15 +69,15 @@ There's 2 stack navigator :
 
 ```jsx
 export default () => {
-	const auth = useContext(AuthContext);
-	const user = auth.user;
-	return (
-		<NavigationContainer>
-			{user == null && <Loading />}
-			{user == false && <Auth />}
-			{user == true && <Main />}
-		</NavigationContainer>
-	);
+  const auth = useContext(AuthContext);
+  const user = auth.user;
+  return (
+    <NavigationContainer>
+      {user == null && <Loading />}
+      {user == false && <Auth />}
+      {user == true && <Main />}
+    </NavigationContainer>
+  );
 };
 ```
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import * as Linking from 'expo-linking';
+import * as Linking from "expo-linking";
 import {
   ScrollView,
   TouchableOpacity,
@@ -21,9 +21,9 @@ import {
 } from "react-native-rapi-ui";
 
 const ROLES = [
-  {label: 'Job Seeker', value: 'jobSeeker'},
-  {label: 'Owner', value: 'owner'}
-]
+  { label: "Job Seeker", value: "jobSeeker" },
+  { label: "Owner", value: "owner" },
+];
 
 export default function ({
   navigation,
@@ -32,17 +32,20 @@ export default function ({
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [role, setRole] = useState('jobSeeker');
+  const [role, setRole] = useState("jobSeeker");
 
   async function register() {
     setLoading(true);
-    const { data: { user }, error } = await supabase.auth.signUp({
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.signUp({
       email: email,
       password: password,
       options: {
         data: { role },
-        emailRedirectTo: Linking.createURL('/')
-      }
+        emailRedirectTo: Linking.createURL("/"),
+      },
     });
 
     if (!error && !user) {
@@ -119,38 +122,42 @@ export default function ({
               secureTextEntry={true}
               onChangeText={(text) => setPassword(text)}
             />
-            <View style={{
-              marginTop: 14,
-            }}>
+            <View
+              style={{
+                marginTop: 14,
+              }}
+            >
               <Text>I am a...</Text>
             </View>
-            <View style={{
-              marginTop: 14,
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center'
-            }}>
-
+            <View
+              style={{
+                marginTop: 14,
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
               <RadioButton
-                value={role === 'jobSeeker' ? true : false}
-                onValueChange={() => setRole('jobSeeker')}
-                style={{marginRight: 8}}
+                value={role === "jobSeeker" ? true : false}
+                onValueChange={() => setRole("jobSeeker")}
+                style={{ marginRight: 8 }}
               />
-              <Text size={'md'}>Job Seeker</Text>
+              <Text size={"md"}>Job Seeker</Text>
             </View>
-            <View style={{
-              marginTop: 14,
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center'
-            }}>
-
+            <View
+              style={{
+                marginTop: 14,
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
               <RadioButton
-                value={role === 'owner' ? true : false}
-                onValueChange={() => setRole('owner')}
-                style={{marginRight: 8}}
+                value={role === "owner" ? true : false}
+                onValueChange={() => setRole("owner")}
+                style={{ marginRight: 8 }}
               />
-              <Text size={'md'}>Business Owner</Text>
+              <Text size={"md"}>Business Owner</Text>
             </View>
             <Button
               text={loading ? "Loading" : "Create an account"}
@@ -159,7 +166,7 @@ export default function ({
               }}
               style={{
                 marginTop: 20,
-                zIndex: 0
+                zIndex: 0,
               }}
               disabled={loading}
             />

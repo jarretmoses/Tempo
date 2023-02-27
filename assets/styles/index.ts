@@ -72,7 +72,7 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 30,
-    height: DIMENSION_HEIGHT / 4
+    height: DIMENSION_HEIGHT / 4,
   },
   button: {
     width: 60,

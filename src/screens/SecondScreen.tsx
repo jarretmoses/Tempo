@@ -11,9 +11,9 @@ import {
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
 
-const SecondScreen: FC<NativeStackScreenProps<MainStackParamList, "SecondScreen">> = ({
-  navigation,
-}) => {
+const SecondScreen: FC<
+  NativeStackScreenProps<MainStackParamList, "SecondScreen">
+> = ({ navigation }) => {
   const { isDarkmode, setTheme } = useTheme();
   return (
     <Layout>
@@ -54,6 +54,6 @@ const SecondScreen: FC<NativeStackScreenProps<MainStackParamList, "SecondScreen"
       </View>
     </Layout>
   );
-}
+};
 
-export default SecondScreen
+export default SecondScreen;
