@@ -1,8 +1,8 @@
-import React from "react";
-import { View, Linking } from "react-native";
-import { MainStackParamList } from "../types/navigation";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { supabase } from "../initSupabase";
+import React from 'react';
+import { View, Linking } from 'react-native';
+import { MainStackParamList } from '../types/navigation';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { supabase } from '../initSupabase';
 import {
   Layout,
   Button,
@@ -12,12 +12,12 @@ import {
   SectionContent,
   useTheme,
   themeColor,
-} from "react-native-rapi-ui";
-import { Ionicons } from "@expo/vector-icons";
+} from 'react-native-rapi-ui';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function ({
+const Home = ({
   navigation,
-}: NativeStackScreenProps<MainStackParamList, "MainTabs">) {
+}: NativeStackScreenProps<MainStackParamList, 'MainTabs'>) => {
   const { isDarkmode, setTheme } = useTheme();
   return (
     <Layout>
@@ -25,41 +25,41 @@ export default function ({
         middleContent="Home"
         rightContent={
           <Ionicons
-            name={isDarkmode ? "sunny" : "moon"}
+            name={isDarkmode ? 'sunny' : 'moon'}
             size={20}
             color={isDarkmode ? themeColor.white100 : themeColor.dark}
           />
         }
         rightAction={() => {
           if (isDarkmode) {
-            setTheme("light");
+            setTheme('light');
           } else {
-            setTheme("dark");
+            setTheme('dark');
           }
         }}
       />
       <View
         style={{
           flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <Section style={{ marginTop: 20 }}>
           <SectionContent>
-            <Text fontWeight="bold" style={{ textAlign: "center" }}>
+            <Text fontWeight="bold" style={{ textAlign: 'center' }}>
               These UI components provided by Rapi UI
             </Text>
             <Button
               style={{ marginTop: 10 }}
               text="Rapi UI Documentation"
               status="info"
-              onPress={() => Linking.openURL("https://rapi-ui.kikiding.space/")}
+              onPress={() => Linking.openURL('https://rapi-ui.kikiding.space/')}
             />
             <Button
               text="Go to second screen"
               onPress={() => {
-                navigation.navigate("SecondScreen");
+                navigation.navigate('SecondScreen');
               }}
               style={{
                 marginTop: 10,
@@ -71,7 +71,7 @@ export default function ({
               onPress={async () => {
                 const { error } = await supabase.auth.signOut();
                 if (!error) {
-                  alert("Signed out!");
+                  alert('Signed out!');
                 }
                 if (error) {
                   alert(error.message);
@@ -86,4 +86,6 @@ export default function ({
       </View>
     </Layout>
   );
-}
+};
+
+export default Home;

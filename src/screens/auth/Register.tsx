@@ -19,15 +19,12 @@ import {
   themeColor,
   RadioButton,
 } from "react-native-rapi-ui";
+import { Database } from "../../../@types/supabase";
+import { createUserProfile } from "../../api/createUserProfile";
 
-const ROLES = [
-  { label: "Job Seeker", value: "jobSeeker" },
-  { label: "Owner", value: "owner" },
-];
-
-export default function ({
+const Register = ({
   navigation,
-}: NativeStackScreenProps<AuthStackParamList, "Register">) {
+}: NativeStackScreenProps<AuthStackParamList, "Register">) => {
   const { isDarkmode, setTheme } = useTheme();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -51,7 +48,15 @@ export default function ({
     if (!error && !user) {
       setLoading(false);
       alert("Check your email for the login link!");
+    } else if (!error && user) {
+      try {
+        const res = await createUserProfile(user.id);
+        console.log("RESPONSE:::", res);
+      } catch (err) {
+        console.log("ERR", err);
+      }
     }
+
     if (error) {
       setLoading(false);
       alert(error.message);
@@ -225,4 +230,6 @@ export default function ({
       </Layout>
     </KeyboardAvoidingView>
   );
-}
+};
+
+export default Register;

@@ -1,9 +1,10 @@
-import React, { createContext, useState, useEffect } from "react";
-import { supabase } from "../initSupabase";
-import { Session } from "@supabase/supabase-js";
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { supabase } from '../initSupabase';
+import { Session } from '@supabase/supabase-js';
 type ContextProps = {
-  user: null | boolean;
+  user: Session['user'] | null;
   session: Session | null;
+  loading: boolean;
 };
 
 const AuthContext = createContext<Partial<ContextProps>>({});
@@ -14,7 +15,8 @@ interface Props {
 
 const AuthProvider = (props: Props) => {
   // user null = loading
-  const [user, setUser] = useState<null | boolean>(null);
+  const [user, setUser] = useState<Session['user'] | null>();
+  const [loading, setLoading] = useState(true);
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
@@ -22,16 +24,16 @@ const AuthProvider = (props: Props) => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-
       setSession(session);
-      setUser(session ? true : false);
+      setUser(session ? session.user : null);
+      setLoading(false);
     };
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log(`Supabase auth event: ${event}`);
         setSession(session);
-        setUser(session ? true : false);
+        setUser(session ? session.user : null);
       }
     );
 
@@ -40,7 +42,9 @@ const AuthProvider = (props: Props) => {
     }
 
     return () => {
-      authListener!.subscription.unsubscribe();
+      if (authListener) {
+        authListener.subscription.unsubscribe();
+      }
     };
   }, [user]);
 
@@ -49,6 +53,7 @@ const AuthProvider = (props: Props) => {
       value={{
         user,
         session,
+        loading,
       }}
     >
       {props.children}
@@ -56,4 +61,6 @@ const AuthProvider = (props: Props) => {
   );
 };
 
-export { AuthContext, AuthProvider };
+const useAuth = () => useContext(AuthContext);
+
+export { AuthContext, AuthProvider, useAuth };
