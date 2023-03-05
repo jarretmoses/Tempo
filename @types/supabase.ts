@@ -3,6 +3,7 @@ export type Json =
   | number
   | boolean
   | null
+  | unknown[]
   | { [key: string]: Json }
   | Json[];
 
@@ -13,19 +14,19 @@ export interface Database {
         Row: {
           created_at: string | null;
           id: number;
-          raw_profile_data: Json | null;
+          raw_profile_data: Tempo.IOwnerFormData | null;
           user_id: string;
         };
         Insert: {
           created_at?: string | null;
           id?: number;
-          raw_profile_data?: Json | null;
+          raw_profile_data?: Tempo.IOwnerFormData | null;
           user_id: string;
         };
         Update: {
           created_at?: string | null;
           id?: number;
-          raw_profile_data?: Json | null;
+          raw_profile_data?: Tempo.IOwnerFormData | null;
           user_id?: string;
         };
       };

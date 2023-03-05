@@ -6,5 +6,5 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "lib": ["dom", "esnext"]
-  }
+  },
 }
