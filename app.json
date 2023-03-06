@@ -26,6 +26,14 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "tempo"
+    "scheme": "tempo",
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you add to your profile."
+        }
+      ]
+    ]
   }
 }

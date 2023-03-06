@@ -9,5 +9,6 @@ declare namespace Tempo {
     companyType: string;
     about: string;
     positions: IPosition[];
+    images?: string[];
   }
 }
