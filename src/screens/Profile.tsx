@@ -4,24 +4,24 @@ import {
   ScrollView,
   Button as NativeButton,
 } from 'react-native';
-import { MainStackParamList } from '../types/navigation';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Layout } from 'react-native-rapi-ui';
 import { supabase } from '../initSupabase';
 import { useAuth } from '../provider/AuthProvider';
 import { OwnerProfileForm } from '../components/profile/OwnerForm';
 import { getUserProfile } from '../api/getUserProfile';
 
-const Profile = ({
-  navigation,
-}: NativeStackScreenProps<MainStackParamList, 'MainTabs'>) => {
-  const [userData, setUserData] = useState();
+type ProfileData = {
+  id: string;
+  raw_profile_data: Tempo.IOwnerFormData;
+};
+
+const Profile = () => {
+  const [userData, setUserData] = useState<ProfileData>();
   const { user } = useAuth();
   const fetchUserData = async () => {
     const profileData = await getUserProfile(user!.id);
-
     // @ts-expect-error Type this later
-    setUserData(profileData.data[0] as Tempo.IOwnerFormData);
+    setUserData(profileData.data[0] as ProfileData);
   };
 
   useEffect(() => {
@@ -39,7 +39,10 @@ const Profile = ({
             padding: 20,
           }}
         >
-          <OwnerProfileForm userId={user!.id} initialFormValues={userData} />
+          <OwnerProfileForm
+            userId={user!.id}
+            initialFormValues={userData?.raw_profile_data}
+          />
           <NativeButton
             onPress={async () => {
               await supabase.auth.signOut();

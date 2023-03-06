@@ -10,7 +10,7 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      user_profile: {
+      profile: {
         Row: {
           created_at: string | null;
           id: number;

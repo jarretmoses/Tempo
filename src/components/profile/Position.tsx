@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-rapi-ui';
+import { FontAwesome } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
   label: {
@@ -21,6 +22,7 @@ interface IPositionProps extends IPosition {
   onChange(positions: IPosition[]): void;
   allPositions: IPosition[];
   index: number;
+  onDelete(index: number): void;
 }
 
 export const Position: FC<IPositionProps> = ({
@@ -29,6 +31,7 @@ export const Position: FC<IPositionProps> = ({
   index,
   title,
   pay,
+  onDelete,
 }) => {
   const handleTitleChange = (newTitle: string) => {
     const position = {
@@ -38,7 +41,6 @@ export const Position: FC<IPositionProps> = ({
 
     const positions = [...allPositions];
     positions[index] = position;
-
     onChange(positions);
   };
 
@@ -61,14 +63,30 @@ export const Position: FC<IPositionProps> = ({
         value={title}
         placeholder="Cashier"
         textContentType="jobTitle"
-        containerStyle={{ flexBasis: '62.5%' }}
+        containerStyle={{ flexBasis: '60%' }}
       />
-      <TextInput
-        onChangeText={handlePayChange}
-        value={pay}
-        placeholder="$20/hr"
-        containerStyle={{ flexBasis: '32.5%' }}
-      />
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <TextInput
+          onChangeText={handlePayChange}
+          value={pay}
+          placeholder="$20/hr"
+          containerStyle={{ flexBasis: '32.5%' }}
+        />
+        <TouchableOpacity
+          disabled={index === 0}
+          onPress={() => onDelete(index)}
+          style={{ marginLeft: 4 }}
+        >
+          <FontAwesome
+            name="trash-o"
+            size={24}
+            color="red"
+            style={{
+              opacity: index === 0 ? 0.3 : 1,
+            }}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

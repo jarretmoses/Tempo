@@ -1,12 +1,14 @@
 import React, { createRef, FC, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Button as NativeButton } from 'react-native';
 import { Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import { Button, Text, TextInput } from 'react-native-rapi-ui';
 import { updateUserProfile } from '../../api/updateUserProfile';
-import { Position } from '../profile/Position';
+import { IPosition, Position } from '../profile/Position';
 
-const Spacer = () => <View style={{ marginBottom: 12 }} />;
+const Spacer: FC<{ small?: boolean }> = ({ small }) => (
+  <View style={{ marginBottom: small ? 6 : 12 }} />
+);
 
 const ErrorMessage = ({ message }: { message: string }) => (
   <View style={{ marginTop: 8 }}>
@@ -16,14 +18,16 @@ const ErrorMessage = ({ message }: { message: string }) => (
 
 const formSchema = Yup.object().shape({
   companyName: Yup.string().required('Required'),
-  companyType: Yup.string().required('Required'),
+  // companyType: Yup.string().required('Required'),
   about: Yup.string().required('Required'),
-  positions: Yup.array().of(
-    Yup.object().shape({
-      title: Yup.string().required('Required'),
-      pay: Yup.string(),
-    })
-  ),
+  positions: Yup.array()
+    .of(
+      Yup.object().shape({
+        title: Yup.string().required('Required'),
+        pay: Yup.string(),
+      })
+    )
+    .min(1),
 });
 
 interface IOwnerProfileFormProps {
@@ -46,6 +50,20 @@ export const OwnerProfileForm: FC<IOwnerProfileFormProps> = ({
   initialFormValues,
 }) => {
   const formRef = createRef<FormikProps<Tempo.IOwnerFormData>>();
+  const addNewPosition = () => {
+    const { current: form } = formRef;
+    const positions = form?.values.positions ?? [];
+
+    form?.setFieldValue('positions', [
+      ...positions,
+      [
+        {
+          title: '',
+          pay: '',
+        },
+      ],
+    ]);
+  };
 
   useEffect(() => {
     if (initialFormValues) {
@@ -54,6 +72,19 @@ export const OwnerProfileForm: FC<IOwnerProfileFormProps> = ({
 
     return () => formRef.current?.resetForm();
   }, [formRef.current, initialFormValues]);
+
+  const handlePositionChange = (positions: IPosition[]) => {
+    formRef.current?.setFieldValue('positions', positions);
+  };
+
+  const handleDeletePositions = (index: number) => {
+    const { current: form } = formRef;
+    const positions = [...(form?.values.positions ?? [])];
+
+    positions.splice(index, 1);
+
+    form?.setFieldValue('positions', positions);
+  };
 
   return (
     <Formik
@@ -74,10 +105,14 @@ export const OwnerProfileForm: FC<IOwnerProfileFormProps> = ({
       }}
       onSubmit={async (payload) => {
         try {
-          await updateUserProfile({
+          const res = await updateUserProfile({
             userId,
             payload,
           });
+
+          if (!res.error) {
+            // TODO: Show some success
+          }
         } catch (err) {
           console.error(JSON.stringify(err));
         }
@@ -108,15 +143,22 @@ export const OwnerProfileForm: FC<IOwnerProfileFormProps> = ({
           <Spacer />
           <Text style={styles.label}>Positions</Text>
           {values.positions.map(({ title, pay }, index) => (
-            <Position
-              key={`${title}:${index}`}
-              title={title}
-              pay={pay}
-              index={index}
-              onChange={handleChange}
-              allPositions={values.positions}
-            />
+            <>
+              <Position
+                key={index}
+                title={title}
+                pay={pay}
+                index={index}
+                onChange={handlePositionChange}
+                onDelete={handleDeletePositions}
+                allPositions={values.positions}
+              />
+              <Spacer small />
+            </>
           ))}
+          <View style={{ flexDirection: 'row' }}>
+            <NativeButton title="Add position +" onPress={addNewPosition} />
+          </View>
           <Spacer />
           <Button
             onPress={() => {

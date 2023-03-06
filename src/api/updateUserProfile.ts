@@ -6,7 +6,7 @@ export type CreateProfileResponseSuccess = CreateProfileReturnType['data'];
 export type CreateProfileResponseError = CreateProfileReturnType['error'];
 
 type Payload =
-  Database['public']['Tables']['user_profile']['Insert']['raw_profile_data'];
+  Database['public']['Tables']['profile']['Insert']['raw_profile_data'];
 interface IUpdateUserProfile {
   userId: string;
   payload: Payload;
@@ -17,7 +17,7 @@ export const updateUserProfile = async ({
   payload,
 }: IUpdateUserProfile) => {
   return await supabase
-    .from('user_profile')
-    .update(payload)
+    .from('profile')
+    .update({ raw_profile_data: payload })
     .eq('user_id', userId);
 };
